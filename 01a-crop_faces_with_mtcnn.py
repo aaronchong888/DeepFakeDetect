@@ -9,8 +9,18 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 physical_devices = tf.config.list_physical_devices('GPU')
 print(physical_devices)
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
+try:
+    # List all available GPUs
+    physical_devices = tf.config.experimental.list_physical_devices('GPU')
+    if physical_devices:
+        tf.config.experimental.set_memory_growth(physical_devices[0], True)
+    else:
+        print("No GPU found. Using CPU.")
+
+except Exception as e:
+    print(f"Error setting GPU memory growth: {e}")
+    
 base_path = '.\\train_sample_videos\\'
 
 def get_filename_only(file_path):

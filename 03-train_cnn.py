@@ -108,7 +108,7 @@ model.add(Dense(units = 1, activation = 'sigmoid'))
 model.summary()
 
 # Compile model
-model.compile(optimizer = Adam(lr=0.0001), loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer = Adam(learning_rate=0.0001), loss='binary_crossentropy', metrics=['accuracy'])
 
 checkpoint_filepath = '.\\tmp_checkpoint'
 print('Creating Directory: ' + checkpoint_filepath)
@@ -132,7 +132,7 @@ custom_callbacks = [
 
 # Train network
 num_epochs = 20
-history = model.fit_generator(
+history = model.fit(
     train_generator,
     epochs = num_epochs,
     steps_per_epoch = len(train_generator),
@@ -142,12 +142,11 @@ history = model.fit_generator(
 )
 print(history.history)
 
-'''
 # Plot results
 import matplotlib.pyplot as plt
 
-acc = history.history['acc']
-val_acc = history.history['val_acc']
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
 loss = history.history['loss']
 val_loss = history.history['val_loss']
 
@@ -165,7 +164,7 @@ plt.title('Training and Validation Loss')
 plt.legend()
 
 plt.show()
-'''
+
 
 # load the saved model that is considered the best
 best_model = load_model(os.path.join(checkpoint_filepath, 'best_model.h5'))
